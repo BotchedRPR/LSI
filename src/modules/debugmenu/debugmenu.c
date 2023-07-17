@@ -42,19 +42,19 @@ int show()
     wrefresh(menuwin);//Refreshing just the window
     keypad(menuwin, TRUE);//Enabling keyboard in menu
 
-    char *choices[] = {
-       	"Test 1",
-        "Test 2",
-        "Test 3",
-        "Test 4",
-        "Bail out",
-    };
+    char *choices[10] = {};
     int choice;
     int selected=0;
-
+    int choicearrsize = -1;
+    #ifdef CONFIG_SIMPLE_DEBUG
+    choices[0] = "File browser";
+    choicearrsize++;
+    #endif
+    choices[choicearrsize+1] = "Bail out";
+    choicearrsize++;
     while(1)//Refreshing the menu constantly
     {
-        for(i = 0; i < 5; i++) {
+        for(i = 0; i < choicearrsize+1; i++) {
             if(i == selected)
                 wattron(menuwin, A_REVERSE);
             mvwprintw(menuwin, i+1, 1, choices[i]);
@@ -71,7 +71,7 @@ int show()
             break;
         case KEY_DOWN:
             selected++;
-            if(selected > 4) selected = 4;
+            if(selected > choicearrsize) selected = choicearrsize;
             break;
         default:
             break;
@@ -80,15 +80,9 @@ int show()
         if(choice==10) break;
     }
 
-    printw("\nWybrano:%s", choices[selected]);
-    refresh();
-
-    /* Wait for user to press enter to exit */
-    getch();
-
     /* Need to cleanup before exit */
     endwin();
-
+    printf("ChoiceArrSize: %i", choicearrsize);
     return 0;
 }
 
