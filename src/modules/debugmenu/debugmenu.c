@@ -101,9 +101,8 @@ int show()
 
         if(choice==10) break;
     }
-    launcher(choices[selected]);
-    /* Need to cleanup before exit */
     endwin();
+    launcher(choices[selected]);
     
     return 0;
 }

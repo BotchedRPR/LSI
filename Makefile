@@ -1,7 +1,7 @@
 include .config
 
 CC = gcc
-CFLAGS = -static -o init -lcurses -ltinfo -I $(HEADERDIR)
+CFLAGS = -static -o init -lcurses -O2 -ltinfo -I $(HEADERDIR)
 ROOTDIR = $(shell pwd)
 HEADERDIR = $(ROOTDIR)/include
 EXTRACFILES = 
@@ -21,7 +21,7 @@ ifeq ($(CONFIG_WAIT_FOR_DEVICES),y)
 	$(eval CFLAGS += -DWAIT_FOR_DEVICES) $(eval CFLAGS += -DDEVICE_WAIT_TIME=$(DEVICE_WAIT_TIME))
 endif
 ifeq ($(CONFIG_DEBUG_FILEBROWSER),y)
-	$(eval CFLAGS += -DCONFIG_DEBUG_FILEBROWSER)
+	$(eval CFLAGS += -DCONFIG_DEBUG_FILEBROWSER) $(eval EXTRACFILES+=$(SRCDIR)/modules/filemanager/filemanager.c)
 endif
 ifeq ($(CONFIG_DEBUG_USER1),y)
 	$(eval CFLAGS += -DCONFIG_DEBUG_USER1) $(eval EXTRACFILES+=$(SRCDIR)/modules/debugmenu/user/user1.c)
