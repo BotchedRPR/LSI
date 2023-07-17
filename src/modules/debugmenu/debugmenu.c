@@ -16,7 +16,7 @@ int show()
     char greeting[]="LSI - Debug menu component";
     int hei, len; 
 
-    initscr(); //Inizjalizacja całości ncurses, kolory itp
+    initscr(); //ncurses init
     raw();
     noecho();
     keypad(stdscr, TRUE);
@@ -30,19 +30,17 @@ int show()
         fail("Unable to start colors\n");
     }
 
-    //init_pair(1, COLOR_BLUE, COLOR_BLACK); //wybór kolorów
-
-    getmaxyx(stdscr, hei, len); //pobranie rozmiarów terminalu
-    move(hei/2, (len-strlen(greeting))/2); //przesuwamy kursor na środek (tak aby się ładnie wydrukowało)
-    //attron(COLOR_PAIR(1)); //Aktywujemy wybrane kolory
-    printw(greeting); //Drukujemy powitanie
-    //attroff(COLOR_PAIR(1));//Dezaktywujemy kolory
-    refresh();//Odswiezamy (inaczej się nie wyswietli)
-    WINDOW * menuwin=newwin(7, len-12, hei-9, 6); //Definiujemy i tworzymy 'okno'
+    getmaxyx(stdscr, hei, len); //Get terminal dimensions
+    move(hei/2, (len-strlen(greeting))/2); //Moving cursor
+    //attron(COLOR_PAIR(1)); //Colors
+    printw(greeting); //Print out LSI - Debug menu component
+    //attroff(COLOR_PAIR(1));//No more colors
+    refresh();//Refreshing
+    WINDOW * menuwin=newwin(7, len-12, hei-9, 6); //Creating window
     box(menuwin, 0, 0);
-    refresh();//ponownie odświeżamy aby okno się pojawiło
-    wrefresh(menuwin);//odświeżamy samo okno
-    keypad(menuwin, TRUE);//umozliwiamy dzialanie klawiatury w oknie
+    refresh();//Refreshing so that the window shows up
+    wrefresh(menuwin);//Refreshing just the window
+    keypad(menuwin, TRUE);//Enabling keyboard in menu
 
     char *choices[] = {
        	"Test 1",
@@ -54,7 +52,7 @@ int show()
     int choice;
     int selected=0;
 
-    while(1)//cala ta petla sluzy ciaglemu tworzeniu menu z podswietleniem wybranego elementu
+    while(1)//Refreshing the menu constantly
     {
         for(i = 0; i < 5; i++) {
             if(i == selected)
@@ -69,7 +67,7 @@ int show()
         {
         case KEY_UP:
             selected--;
-            if(selected < 0) selected = 0;//zabezpieczenie przed wyjsciem "poza" menu
+            if(selected < 0) selected = 0;//Make sure the cursor is in menu bounds
             break;
         case KEY_DOWN:
             selected++;
