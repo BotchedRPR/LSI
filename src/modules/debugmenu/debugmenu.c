@@ -4,6 +4,16 @@
 #include <menu.h>
 #include <stdlib.h>           // added for exit() function
 
+#include "modules/debugmenu/launcher.h" //added for program launcher
+#ifdef CONFIG_DEBUG_USER1
+#include "modules/debugmenu/user/user1.h"
+#endif
+#ifdef CONFIG_DEBUG_USER2
+#include "modules/debugmenu/user/user2.h"
+#endif
+#ifdef CONFIG_DEBUG_USER3
+#include "modules/debugmenu/user/user3.h"
+#endif
 void fail(char *msg) {
     endwin();
     puts(msg);
@@ -46,9 +56,21 @@ int show()
     int choice;
     int selected=0;
     int choicearrsize = -1;
-    #ifdef CONFIG_SIMPLE_DEBUG
-    choices[0] = "File browser";
-    choicearrsize++;
+    #ifdef CONFIG_DEBUG_FILEBROWSER
+    	choices[0] = "File browser";
+    	choicearrsize++;
+    #endif
+    #ifdef CONFIG_DEBUG_USER1
+    	choices[choicearrsize+1] = user1_menuitem_name;
+    	choicearrsize++;
+    #endif
+    #ifdef CONFIG_DEBUG_USER2
+    	choices[choicearrsize+1] = user2_menuitem_name;
+    	choicearrsize++;
+    #endif
+    #ifdef CONFIG_DEBUG_USER3
+    	choices[choicearrsize+1] = user3_menuitem_name;
+    	choicearrsize++;
     #endif
     choices[choicearrsize+1] = "Bail out";
     choicearrsize++;
@@ -79,10 +101,10 @@ int show()
 
         if(choice==10) break;
     }
-
+    launcher(choices[selected]);
     /* Need to cleanup before exit */
     endwin();
-    printf("ChoiceArrSize: %i", choicearrsize);
+    
     return 0;
 }
 
