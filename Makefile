@@ -6,8 +6,14 @@ ROOTDIR = $(shell pwd)
 HEADERDIR = $(ROOTDIR)/include
 EXTRACFILES = 
 SRCDIR = $(ROOTDIR)/src
+getstartupmodule:
+ifeq ($(CONFIG_AUTOSTART),panic)
+	$(eval CFLAGS += -DCONFIG_AUTOSTART_PANIC)
+else ifeq ($(CONFIG_AUTOSTART),simple_debug)
+	$(eval CFLAGS += -DCONFIG_AUTOSTART_SIMPLE_DEBUG) $(eval EXTRACFILES+=$(SRCDIR)/core/autostart.c)
+endif
 
-configparse:
+configparse: getstartupmodule
 ifeq ($(CONFIG_SIMPLE_DEBUG),y)
 	$(eval EXTRACFILES+=$(SRCDIR)/modules/debugmenu/debugmenu.c $(SRCDIR)/modules/debugmenu/launcher.c) $(eval CFLAGS += -DCONFIG_SIMPLE_DEBUG)
 endif
@@ -25,6 +31,9 @@ ifeq ($(CONFIG_DEBUG_USER2),y)
 endif
 ifeq ($(CONFIG_DEBUG_USER3),y)
         $(eval CFLAGS += -DCONFIG_DEBUG_USER3) $(eval EXTRACFILES+=$(SRCDIR)/modules/debugmenu/user/user3.c)
+endif
+ifeq ($(CONFIG_EXIT_LOOP),y)
+	$(eval CFLAGS += -DCONFIG_EXIT_LOOP)
 endif
 
 init: configparse
