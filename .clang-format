@@ -1,0 +1,5 @@
+BasedOnStyle: Google
+IndentWidth: 8
+UseTab: Always
+TabWidth: 8
+BreakBeforeBraces: Linux

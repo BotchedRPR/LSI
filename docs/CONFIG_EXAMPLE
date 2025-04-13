@@ -1,9 +1,0 @@
-#This is an example that you can use to make the config for lsi.
-#A menuconfig style app is planned.
-
-CONFIG_WAIT_FOR_DEVICES=y
-DEVICE_WAIT_TIME=2
-CONFIG_SIMPLE_DEBUG=y
-CONFIG_DEBUG_USER1=y
-CONFIG_DEBUG_USER2=y
-CONFIG_DEBUG_USER3=y

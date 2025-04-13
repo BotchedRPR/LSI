@@ -1,5 +1,0 @@
-Copy the nc-linux file to 
-	/etc/terminfo/l/linux
-If you don't do that, you will be hit with a kernel panic with the last log line being 
-	"failed to open terminal: linux"
-READ THIS BEFORE REPORTING BUGS!
