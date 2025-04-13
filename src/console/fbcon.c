@@ -142,8 +142,11 @@ void draw_char(int x, int y, char c, uint32_t fg_color, uint32_t bg_color)
 int draw_string(int x, int y, const char *str)
 {
 	if (y + (FONT_Y*2) >= vinfo.yres)
+	{
+		memset (fb_noblit, 0, fb_data_size);
+		framebuffer_dirty = 1;
 		return 1;
-
+	}
 
 	while (*str) {
 		draw_char(x, y, *str, FONT_WHITE, FONT_BLACK);
