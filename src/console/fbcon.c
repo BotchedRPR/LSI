@@ -84,8 +84,6 @@ static void *blit_function(void *arg)
 
 void draw_pixel(int x, int y, uint32_t color)
 {
-	if (x < 0 || x >= vinfo.xres || y < 0 || y >= vinfo.yres) return;
-
 	pthread_mutex_lock(&noblit_mutex);
 	uint8_t *pixel_ptr = fb_noblit + y * finfo.line_length +
 			     (x * (vinfo.bits_per_pixel / 8));
@@ -143,10 +141,14 @@ void draw_char(int x, int y, char c, uint32_t fg_color, uint32_t bg_color)
 
 int draw_string(int x, int y, const char *str)
 {
-	if (y >= vinfo.yres) return 1;
+	if (y + (FONT_Y*2) >= vinfo.yres)
+		return 1;
+
 
 	while (*str) {
 		draw_char(x, y, *str, FONT_WHITE, FONT_BLACK);
+		if(x+FONT_X >= vinfo.xres)
+			return 2;
 		x += FONT_X;  // Move right for next character
 		str++;
 	}
